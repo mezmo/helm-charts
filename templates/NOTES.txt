@@ -1,0 +1,22 @@
+{{- if not .Values.mezmoApiAccessToken -}}
+#####################################################################
+###  ERROR: Please specify an access token `mezmoApiAccessToken`  ###
+#####################################################################
+
+Try:
+
+helm upgrade --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} {{ .Chart.Name }}
+
+{{- else -}}
+Welcome to {{ .Release.Name }}!
+
+For more information, you can run the following commands:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+{{ if .Values.service.sourcePorts.start }}
+The following port range has been allocated for Pipeline sources: {{ .Values.service.sourcePorts.start }}-{{ .Values.service.sourcePorts.end }} (TCP/UDP)
+{{- end}}
+
+Data can be sent to pipeline sources using the service endpoint "{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local:<source_port>"
+{{- end }}

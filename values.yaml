@@ -1,0 +1,65 @@
+# Default values for pulse.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+# The scheme to use for the Mezmo API URL (http or https)
+mezmoApiScheme: "https"
+
+# The hostname[:port] of the Mezmo API
+mezmoApiHost: "api.mezmo.com"
+
+# Your Mezmo API Access Token
+mezmoApiAccessToken: ""
+
+logLevel: "info"
+
+image:
+  repository: us.gcr.io/logdna-k8s/vector
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  # Ports that are required operationally by the service
+  servicePorts:
+    - name: graphql-api
+      protocol: TCP
+      port: 8686
+      targetPort: 8686
+  # Ports that are mapped to Pipeline sources
+  sourcePorts:
+    start: ""
+    end: ""
+
+replicaCount: 1
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 85
+  targetMemoryUtilizationPercentage: 85
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
+
+secretAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+imagePullSecrets: []
