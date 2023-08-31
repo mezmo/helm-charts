@@ -6,3 +6,6 @@ description: A Helm chart for deploying Mezmo Pulse
 type: application
 appVersion: "1.9.1"
 version: 0.1.0
+maintainers:
+  - name: Mezmo
+    email: help@mezmo.com
