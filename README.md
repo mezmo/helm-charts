@@ -14,8 +14,8 @@ helm repo update
 ### Installing Mezmo Pulse
 
 ```shell
-helm install my_pulse_deployment mezmo/pulse \
---set mezmoApiAccessToken=<PIPELINE_SERVICE_TOKEN> \
---set service.sourcePorts.start=8080 \
---set service.sourcePorts.end=8100
+helm install pulse mezmo/pulse \
+    --set mezmoApiAccessToken=MY_PIPELINE_SERVICE_TOKEN \
+    --set service.sourcePorts.start=8080 \
+    --set service.sourcePorts.end=8100
 ```
