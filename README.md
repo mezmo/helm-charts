@@ -7,7 +7,7 @@ Helm charts for Mezmo products.
 You need to add this repository to your Helm repositories:
 
 ```shell
-helm repo add mezmo https://mezmo.github.io/helm-charts/
+helm repo add mezmo https://helm.mezmo.com
 helm repo update
 ```
 
