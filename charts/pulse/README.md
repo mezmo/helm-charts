@@ -12,7 +12,7 @@
 ## Quickstart
 
 ```sh
-helm install pulse . \
+helm install pulse mezmo/pulse \
   --namespace <MY_NAMESPACE> \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
   --set service.sourcePorts.start=<START_PORT> \
