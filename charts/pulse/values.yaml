@@ -17,7 +17,7 @@ mezmoApiAccessToken: ""
 logLevel: "info"
 
 image:
-  repository: us.gcr.io/logdna-k8s/vector
+  repository: mezmohq/vector
   pullPolicy: IfNotPresent
 
 service:
