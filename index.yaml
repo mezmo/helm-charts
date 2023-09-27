@@ -2,6 +2,21 @@ apiVersion: v1
 entries:
   pulse:
   - apiVersion: v2
+    appVersion: 1.17.3
+    created: "2023-09-27T13:41:29.031370073Z"
+    description: A Helm chart for deploying Mezmo Pulse
+    digest: 7e30b7452f81660cfd4cffec4d267c733b3b683053537eff009f3b886cc1b328
+    home: https://www.mezmo.com
+    icon: https://app.mezmo.com/assets/img/mz-logo-square-128.png
+    maintainers:
+    - email: help@mezmo.com
+      name: Mezmo
+    name: pulse
+    type: application
+    urls:
+    - https://github.com/mezmo/helm-charts/releases/download/pulse-0.3.1/pulse-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
     appVersion: 1.17.1
     created: "2023-09-26T15:11:26.813438201Z"
     description: A Helm chart for deploying Mezmo Pulse
@@ -46,4 +61,4 @@ entries:
     urls:
     - https://github.com/mezmo/helm-charts/releases/download/pulse-0.1.0/pulse-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-26T15:11:26.813455001Z"
+generated: "2023-09-27T13:41:29.031385273Z"
