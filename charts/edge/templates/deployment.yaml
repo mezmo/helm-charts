@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "pulse.fullname" . }}
+  name: {{ include "edge.fullname" . }}
   labels:
-    {{- include "pulse.labels" . | nindent 4 }}
+    {{- include "edge.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "pulse.selectorLabels" . | nindent 6 }}
+      {{- include "edge.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "pulse.selectorLabels" . | nindent 8 }}
+        {{- include "edge.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "pulse.serviceAccountName" . }}
+      serviceAccountName: {{ include "edge.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
@@ -34,7 +34,7 @@ spec:
           projected:
             sources:
               - configMap:
-                  name: {{ include "pulse.fullname" . }}
+                  name: {{ include "edge.fullname" . }}
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
@@ -50,14 +50,14 @@ spec:
           - name: MEZMO_LOCAL_DEPLOY_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ include "pulse.fullname" . }}
+                name: {{ include "edge.fullname" . }}
                 key: api-access-token
           - name: MEZMO_METRICS_ENDPOINT_URL
-            value: "{{include "pulse.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/metric/usage"
+            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/metric/usage"
           - name: MEZMO_TASKS_FETCH_ENDPOINT_URL
-            value: "{{include "pulse.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks"
+            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks"
           - name: MEZMO_TASKS_POST_ENDPOINT_URL
-            value: "{{include "pulse.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks/:task_id/results?pipeline_id=:pipeline_id"
+            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks/:task_id/results?pipeline_id=:pipeline_id"
           - name: VECTOR_LOG
             value: {{ .Values.logLevel }}
           - name: POD_NAME

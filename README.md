@@ -11,10 +11,10 @@ helm repo add mezmo https://helm.mezmo.com
 helm repo update
 ```
 
-### Installing Mezmo Pulse
+### Installing Mezmo Edge
 
 ```shell
-helm install pulse mezmo/pulse \
+helm install edge mezmo/edge \
     --set mezmoApiAccessToken=MY_PIPELINE_SERVICE_TOKEN \
     --set service.sourcePorts.start=8080 \
     --set service.sourcePorts.end=8100
