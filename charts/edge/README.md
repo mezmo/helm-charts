@@ -1,18 +1,18 @@
-# Mezmo Pulse
+# Mezmo Edge
 
-> Helm chart for managing a Mezmo Pulse deployment
+> Helm chart for managing a Mezmo Edge deployment
 
 ## Prerequisites
 
 - Kubernetes 1.10+ (1.23+ if using autoscaling)
-- Mezmo Account with Pulse Pipeline support
+- Mezmo Account with Edge Pipeline support
 - Mezmo API Token
 
 
 ## Quickstart
 
 ```sh
-helm install pulse mezmo/pulse \
+helm install edge mezmo/edge \
   --namespace <MY_NAMESPACE> \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
   --set service.sourcePorts.start=<START_PORT> \
