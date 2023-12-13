@@ -15,7 +15,6 @@ helm repo update
 
 ```shell
 helm install edge mezmo/edge \
-    --set mezmoApiAccessToken=MY_PIPELINE_SERVICE_TOKEN \
-    --set service.sourcePorts.start=8080 \
-    --set service.sourcePorts.end=8100
+  --namespace <MY_NAMESPACE> \
+  --set mezmoApiAccessToken=<MY_PIPELINE_SERVICE_TOKEN> \
 ```

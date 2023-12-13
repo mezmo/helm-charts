@@ -30,8 +30,8 @@ service:
       targetPort: 8686
   # Ports that are mapped to Pipeline sources
   sourcePorts:
-    start: ""
-    end: ""
+    start: 8000
+    end: 8010
 
 replicaCount: 1
 autoscaling:
