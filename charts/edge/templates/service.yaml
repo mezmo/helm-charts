@@ -15,7 +15,7 @@ spec:
       targetPort: {{ .targetPort }}
       protocol: {{ .protocol }}
     {{- end }}
-    {{- range untilStep (.Values.service.sourcePorts.start|int) (.Values.service.sourcePorts.end|int) 1 }}
+    {{- range untilStep (.Values.service.sourcePorts.start|int) (add1 .Values.service.sourcePorts.end | int) 1 }}
     - port: {{ . }}
       targetPort: {{ . }}
       protocol: UDP

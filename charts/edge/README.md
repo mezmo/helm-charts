@@ -17,6 +17,8 @@ helm install edge mezmo/edge \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
 ```
 
+By default ports in the range [8000, 8010] are configured. See `service.sourcePorts.*` values for configuring different ranges.
+
 ## Configuration
 
 ### Values
@@ -29,7 +31,7 @@ helm install edge mezmo/edge \
 | logLevel                  | string   | info            | Controls the logging verbosity of the deployment                       |
 | autoscaling.enabled       | boolean  | false           | Whether or not to enable a HorizontalPodAutoscaler for this deployment |
 | service.sourcePorts       | object   |                 | A port range to allocate to sources within the Kubernetes service*     |
-| service.sourcePorts.start | int      | 8000            | The start of the port range                                            |
-| service.sourcePorts.end   | int      | 8010            | The end of the port range                                              |
+| service.sourcePorts.start | int      | 8000            | The start of the port range (inclusive [start, end])                   |
+| service.sourcePorts.end   | int      | 8010            | The end of the port range (set 0 or "" to disable port range)          |
 
 \* Port 8686 is reserved for internal use, and should not be additionally configured for sourcePorts
