@@ -32,6 +32,7 @@ service:
   sourcePorts:
     start: 8000
     end: 8010
+    list: []
 
 replicaCount: 1
 autoscaling:

@@ -17,11 +17,15 @@ spec:
     {{- end }}
     {{- range untilStep (.Values.service.sourcePorts.start|int) (add1 .Values.service.sourcePorts.end | int) 1 }}
     - port: {{ . }}
-      targetPort: {{ . }}
-      protocol: UDP
-      name: "udp-{{ . }}"
-    - port: {{ . }}
-      targetPort: {{ . }}
-      protocol: TCP
       name: "tcp-{{ . }}"
+    - port: {{ . }}
+      name: "udp-{{ . }}"
+      protocol: UDP
+    {{- end }}
+    {{- range (.Values.service.sourcePorts.list) }}
+    - port: {{ . }}
+      name: "tcp-{{ . }}"
+    - port: {{ . }}
+      name: "udp-{{ . }}"
+      protocol: UDP
     {{- end }}

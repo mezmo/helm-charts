@@ -11,10 +11,4 @@ helm repo add mezmo https://helm.mezmo.com
 helm repo update
 ```
 
-### Installing Mezmo Edge
-
-```shell
-helm install edge mezmo/edge \
-  --namespace <MY_NAMESPACE> \
-  --set mezmoApiAccessToken=<MY_PIPELINE_SERVICE_TOKEN> \
-```
+See READMEs for individual charts below for usage details on each.
