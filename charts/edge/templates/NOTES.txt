@@ -5,7 +5,7 @@
 
 Try:
 
-helm upgrade --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} {{ .Chart.Name }}
+helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} {{ .Chart.Name }}
 
 {{- else -}}
 Welcome to {{ .Release.Name }}!
