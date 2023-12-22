@@ -1,0 +1,35 @@
+{{- if .Values.enableK8sLogs }}
+# Permissions to use Kubernetes API.
+# Requires that RBAC authorization is enabled.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "edge.fullname" . }}
+  labels:
+    {{- include "edge.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - nodes
+      - pods
+    verbs:
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "edge.fullname" . }}
+  labels:
+    {{- include "edge.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "edge.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "edge.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
