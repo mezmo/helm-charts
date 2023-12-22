@@ -35,6 +35,14 @@ spec:
             sources:
               - configMap:
                   name: {{ include "edge.fullname" . }}
+        {{- if .Values.enableK8sLogs }}
+        - hostPath:
+            path: /var/log/
+          name: var-log
+        - hostPath:
+            path: /var/lib/
+          name: var-lib
+        {{- end }}
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
@@ -64,6 +72,12 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          {{- if .Values.enableK8sLogs }}
+          - name: EDGE_SELF_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          {{- end }}
           - name: MEZMO_RESHAPE_MESSAGE
             value: "1"
           args:
@@ -77,6 +91,14 @@ spec:
             - name: config
               mountPath: "/etc/vector/"
               readOnly: true
+            {{- if .Values.enableK8sLogs }}
+            - mountPath: /var/log/
+              name: var-log
+              readOnly: true
+            - mountPath: /var/lib/
+              name: var-lib
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

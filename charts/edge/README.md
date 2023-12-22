@@ -29,16 +29,17 @@ helm install edge mezmo/edge \
 
 ### Values
 
-| **Key**                   | **Type** | **Default**     | **Description**                                                        |
-| ------------------------- | -------- | --------------- | ---------------------------------------------------------------------- |
-| mezmoApiScheme            | string   | "https"         | The scheme to use for the Mezmo API URL                                |
-| mezmoApiHost              | string   | "api.mezmo.com" | The hostname(:port) of the Mezmo API                                   |
-| mezmoApiAccessToken       | string   |                 | Your Mezmo API access token                                            |
-| logLevel                  | string   | info            | Controls the logging verbosity of the deployment                       |
-| autoscaling.enabled       | boolean  | false           | Whether or not to enable a HorizontalPodAutoscaler for this deployment |
-| service.sourcePorts       | object   |                 | A port range to allocate to sources within the Kubernetes service*     |
-| service.sourcePorts.start | int      | 8000            | The start of the port range (inclusive [start, end])                   |
-| service.sourcePorts.end   | int      | 8010            | The end of the port range (set 0 or "" to disable port range)          |
-| service.sourcePorts.list  | array[]  | []              | Optional list of discrete ports to configure on the service            |
+| **Key**                   | **Type** | **Default**     | **Description**                                                                  |
+| ------------------------- | -------- | --------------- | -------------------------------------------------------------------------------- |
+| mezmoApiScheme            | string   | "https"         | The scheme to use for the Mezmo API URL                                          |
+| mezmoApiHost              | string   | "api.mezmo.com" | The hostname(:port) of the Mezmo API                                             |
+| mezmoApiAccessToken       | string   |                 | Your Mezmo API access token                                                      |
+| logLevel                  | string   | info            | Controls the logging verbosity of the deployment                                 |
+| autoscaling.enabled       | boolean  | false           | Whether or not to enable a HorizontalPodAutoscaler for this deployment           |
+| service.sourcePorts       | object   |                 | A port range to allocate to sources within the Kubernetes service*               |
+| service.sourcePorts.start | int      | 8000            | The start of the port range (inclusive [start, end])                             |
+| service.sourcePorts.end   | int      | 8010            | The end of the port range (set 0 or "" to disable port range)                    |
+| service.sourcePorts.list  | array[]  | []              | Optional list of discrete ports to configure on the service                      |
+| enableK8sLogs             | boolean  | false           | Whether or not to add ClusterRole and Volume access required for k8s logs source |
 
 \* Port 8686 is reserved for internal use, and should not be additionally configured for sourcePorts

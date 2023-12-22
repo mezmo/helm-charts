@@ -64,3 +64,5 @@ podSecurityContext: {}
 securityContext: {}
 
 imagePullSecrets: []
+
+enableK8sLogs: false
