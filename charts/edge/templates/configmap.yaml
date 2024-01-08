@@ -13,3 +13,11 @@ data:
       request:
         headers:
           authorization: "Token ${MEZMO_LOCAL_DEPLOY_AUTH_TOKEN}"
+        {{- $payload := include "edge.heartbeatCommon" . | fromYaml }}
+        {{- $has_label := and (ge (.Capabilities.KubeVersion.Major | int) 1) (ge (.Capabilities.KubeVersion.Minor | int) 28) }}
+        {{- if $has_label }}
+        {{- $_ := set $payload "replica" "${POD_INDEX_LABEL}"}}
+        {{- else }}
+        {{- $_ := set $payload "replica" "0"}}
+        {{- end }}
+        payload: {{ toJson $payload | quote }}

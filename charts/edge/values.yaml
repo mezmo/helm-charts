@@ -4,6 +4,7 @@
 
 nameOverride: ""
 fullnameOverride: ""
+edgeIdOverride: ""
 
 # The scheme to use for the Mezmo API URL (http or https)
 mezmoApiScheme: "https"
@@ -13,6 +14,11 @@ mezmoApiHost: "api.mezmo.com"
 
 # Your Mezmo API Access Token
 mezmoApiAccessToken: ""
+
+# Deployment group for this Edge instance.
+# Setting configures only pipelines tagged with this group name.
+# Leaving unset configures all Edge pipelines defined in your org.
+mezmoDeploymentGroup: ""
 
 logLevel: "info"
 

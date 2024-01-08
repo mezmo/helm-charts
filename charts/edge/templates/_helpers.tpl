@@ -67,3 +67,38 @@ Generate the base URL of the Mezmo API
 {{- define "edge.mezmoApiBaseUrl" -}}
 {{- printf "%s://%s" .Values.mezmoApiScheme .Values.mezmoApiHost }}
 {{- end }}
+
+{{/*
+Ports as a yaml array
+*/}}
+{{- define "edge.sourcePorts" -}}
+{{- $ports := .Values.service.sourcePorts.list }}
+{{- $start := .Values.service.sourcePorts.start | default 0 | int }}
+{{- $end := .Values.service.sourcePorts.end | default 0 | int }}
+{{- range $port := untilStep $start (add1 $end | int) 1 }}
+  {{- $ports = append $ports $port }}
+{{- end }}
+{{- $ports | uniq | toYaml}}
+{{- end }}
+
+{{/*
+Defaulting Edge ID
+*/}}
+{{- define "edge.Id" -}}
+{{- $id_hash := sha1sum (print .Release.Name .Release.Namespace .Values.mezmoDeploymentGroup) }}
+{{- (default $id_hash .Values.edgeIdOverride) }}
+{{- end }}
+
+{{/*
+Base attributes for heartbeat
+*/}}
+{{- define "edge.heartbeatCommon" -}}
+edge_id: {{ include "edge.Id" . | quote }}
+namespace: {{ $.Release.Namespace }}
+name: {{ $.Release.Name }}
+{{- if .Values.mezmoDeploymentGroup }}
+deployment_group: {{ .Values.mezmoDeploymentGroup | quote }}
+{{- end }}
+ports: {{- include "edge.sourcePorts" . | nindent 2 }}
+version: {{ $.Chart.Version }}
+{{- end }}

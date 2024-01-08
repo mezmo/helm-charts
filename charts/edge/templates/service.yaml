@@ -15,14 +15,7 @@ spec:
       targetPort: {{ .targetPort }}
       protocol: {{ .protocol }}
     {{- end }}
-    {{- range untilStep (.Values.service.sourcePorts.start|int) (add1 .Values.service.sourcePorts.end | int) 1 }}
-    - port: {{ . }}
-      name: "tcp-{{ . }}"
-    - port: {{ . }}
-      name: "udp-{{ . }}"
-      protocol: UDP
-    {{- end }}
-    {{- range (.Values.service.sourcePorts.list) }}
+    {{- range (include "edge.sourcePorts" . | fromYamlArray) }}
     - port: {{ . }}
       name: "tcp-{{ . }}"
     - port: {{ . }}
