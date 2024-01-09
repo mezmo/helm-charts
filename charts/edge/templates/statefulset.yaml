@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "edge.fullname" . }}
   labels:
@@ -7,6 +7,7 @@ metadata:
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  minReadySeconds: 10
   {{- end }}
   selector:
     matchLabels:
@@ -53,9 +54,9 @@ spec:
                 name: {{ include "edge.fullname" . }}
                 key: api-access-token
           - name: MEZMO_METRICS_ENDPOINT_URL
-            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/metric/usage"
+            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/metric/usage?edge_id={{include "edge.Id" . | urlquery }}"
           - name: MEZMO_TASKS_FETCH_ENDPOINT_URL
-            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks"
+            value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks?edge_id={{include "edge.Id" . | urlquery }}"
           - name: MEZMO_TASKS_POST_ENDPOINT_URL
             value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks/:task_id/results?pipeline_id=:pipeline_id"
           - name: VECTOR_LOG
@@ -64,6 +65,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          - name: POD_INDEX_LABEL
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
           - name: MEZMO_RESHAPE_MESSAGE
             value: "1"
           args:
