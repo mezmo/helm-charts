@@ -85,7 +85,7 @@ Ports as a yaml array
 Defaulting Edge ID
 */}}
 {{- define "edge.Id" -}}
-{{- $id_hash := sha1sum (print .Release.Name .Release.Namespace .Values.mezmoDeploymentGroup) }}
+{{- $id_hash := sha1sum (print .Release.Name .Release.Namespace .Values.mezmoDeploymentGroup) | substr 0 8 }}
 {{- (default $id_hash .Values.edgeIdOverride) }}
 {{- end }}
 
