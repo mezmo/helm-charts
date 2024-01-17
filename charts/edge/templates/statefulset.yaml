@@ -59,6 +59,8 @@ spec:
             value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks?edge_id={{include "edge.Id" . | urlquery }}"
           - name: MEZMO_TASKS_POST_ENDPOINT_URL
             value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks/:task_id/results"
+          - name: MEZMO_EDGE_ID
+            value: "{{include "edge.Id" . }}"
           - name: VECTOR_LOG
             value: {{ .Values.logLevel }}
           - name: POD_NAME
