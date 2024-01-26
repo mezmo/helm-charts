@@ -8,15 +8,35 @@ Try:
 helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} {{ .Chart.Name }}
 
 {{- else -}}
-Welcome to {{ .Release.Name }}!
+Welcome to Edge {{ .Release.Version -}} release "{{ .Release.Name }}".
+
+----------------------------------------------------------------
 
 For more information, you can run the following commands:
 
   $ helm status {{ .Release.Name }}
   $ helm get all {{ .Release.Name }}
-{{ if .Values.service.sourcePorts.start }}
-The following port range has been allocated for Pipeline sources: {{ .Values.service.sourcePorts.start }}-{{ .Values.service.sourcePorts.end }} (TCP/UDP)
-{{- end}}
 
-Data can be sent to pipeline sources using the service endpoint "{{ .Release.Name }}.{{ .Release.Namespace }}.svc.cluster.local:<source_port>"
-{{- end }}
+----------------------------------------------------------------
+
+The following ports range are provisioned on the service for Pipeline sources (TCP/UDP):
+{{ include "edge.sourcePorts" . }}
+
+Data can be sent to pipeline sources using the service endpoint "{{include "edge.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:<source_port>"
+
+----------------------------------------------------------------
+
+{{if not .Values.mezmoDeploymentGroup -}}
+NOTE: This Edge instance is running by default with no `mezmoDeploymentGroup` specified. This will configure all Edge pipelines defined in the account.
+
+To run selected pipelines, apply a Deployment Group in the Pipeline Settings page on the web app, and run the following to update this configuration:
+helm upgrade --reuse-values --set mezmoDeploymentGroup=<DEPLOYMENT_GROUP> {{ .Release.Name }} {{ .Chart.Name }}
+
+{{else -}}
+
+This Edge instance is running the "{{ .Values.mezmoDeploymentGroup}}" deployment group pipelines.
+
+{{end -}}
+{{end -}}
+
+-
