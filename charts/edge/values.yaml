@@ -70,3 +70,11 @@ podSecurityContext: {}
 securityContext: {}
 
 imagePullSecrets: []
+
+enableK8sLogs: false
+
+# Optional PersistentVolumeClaim name to use for default storage
+pvcName: ""
+
+maxDiskBufferBytes: 0
+maxMemBufferEvents: 0

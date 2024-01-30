@@ -30,12 +30,25 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: data
+          {{- if .Values.pvcName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvcName | quote }}
+          {{- else }}
           emptyDir: {}
+          {{- end }}
         - name: config
           projected:
             sources:
               - configMap:
                   name: {{ include "edge.fullname" . }}
+        {{- if .Values.enableK8sLogs }}
+        - hostPath:
+            path: /var/log/
+          name: var-log
+        - hostPath:
+            path: /var/lib/
+          name: var-lib
+        {{- end }}
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
@@ -71,8 +84,22 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+          {{- if .Values.enableK8sLogs }}
+          - name: EDGE_SELF_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          {{- end }}
           - name: MEZMO_RESHAPE_MESSAGE
             value: "1"
+          {{- if .Values.maxDiskBufferBytes }}
+          - name: MEZMO_DISK_BUFFER_MAX_BYTES
+            value: {{ .Values.maxDiskBufferBytes }}
+          {{- end }}
+          {{- if .Values.maxMemBufferEvents }}
+          - name: MEZMO_MEM_BUFFER_MAX_EVENTS
+            value: {{ .Values.maxMemBufferEvents }}
+          {{- end }}
           args:
             - --config-dir
             - /etc/vector/
@@ -80,10 +107,18 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: data
-              mountPath: "/vector-data-dir"
+              mountPath: "/data/vector"
             - name: config
               mountPath: "/etc/vector/"
               readOnly: true
+            {{- if .Values.enableK8sLogs }}
+            - mountPath: /var/log/
+              name: var-log
+              readOnly: true
+            - mountPath: /var/lib/
+              name: var-lib
+              readOnly: true
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
