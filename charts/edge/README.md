@@ -40,5 +40,9 @@ helm install edge mezmo/edge \
 | service.sourcePorts.start | int      | 8000            | The start of the port range (inclusive [start, end])
 | service.sourcePorts.end   | int      | 8010            | The end of the port range (set 0 or "" to disable port range)
 | service.sourcePorts.list  | array[]  | []              | Optional list of discrete ports to configure on the service
+| enableK8sLogs             | boolean  | false           | Whether or not to add ClusterRole and Volume access required for k8s logs source
+| pvcName                   | string   | ""              | Optional name for an existing PersistentVolumeClaim to use for disk buffering, aggregate persistence and k8s log checkpoints. Leaving undefined will default to ephemeral storage lasting the lifetime of the pod
+| maxDiskBufferBytes        | int      |                 | Optional max number of bytes to store in a disk-backed buffer. Leaving undefined will use default value of 268435488 (256MiB)
+| maxMemBufferEvents        | int      |                 | Optional max number of events to store in a memory buffer. Leaving undefined will use default value of 1000
 
 \* Port 8686 is reserved for internal use, and should not be additionally configured for sourcePorts
