@@ -3,6 +3,21 @@ entries:
   edge:
   - apiVersion: v2
     appVersion: 3.1.2
+    created: "2024-02-08T17:45:27.479319027Z"
+    description: A Helm chart for deploying Mezmo Edge
+    digest: 073c8f658b6da2f5fdd8037d4f639200d0ca0d0edf5a0218866a0d04b6e8df0f
+    home: https://www.mezmo.com
+    icon: https://app.mezmo.com/assets/img/mz-logo-square-128.png
+    maintainers:
+    - email: help@mezmo.com
+      name: Mezmo
+    name: edge
+    type: application
+    urls:
+    - https://github.com/mezmo/helm-charts/releases/download/edge-0.8.5/edge-0.8.5.tgz
+    version: 0.8.5
+  - apiVersion: v2
+    appVersion: 3.1.2
     created: "2024-02-07T20:20:47.105579585Z"
     description: A Helm chart for deploying Mezmo Edge
     digest: 9d0585a3da6a6f6bae8d37ddf58faf7fd2f87501569bdf5c38309414d6517182
@@ -212,4 +227,4 @@ entries:
     urls:
     - https://github.com/mezmo/helm-charts/releases/download/pulse-0.1.0/pulse-0.1.0.tgz
     version: 0.1.0
-generated: "2024-02-07T20:20:47.105638014Z"
+generated: "2024-02-08T17:45:27.479374831Z"
