@@ -5,10 +5,10 @@
 
 Try:
 
-helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} {{ .Chart.Name }}
+  $ helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} mezmo/{{ .Chart.Name }}
 
-{{- else -}}
-Welcome to Edge {{ .Release.Version -}} release "{{ .Release.Name }}".
+{{ else -}}
+Welcome to Edge {{ .Chart.Version }} release "{{ .Release.Name }}".
 
 ----------------------------------------------------------------
 
@@ -30,7 +30,8 @@ Data can be sent to pipeline sources using the service endpoint "{{include "edge
 NOTE: This Edge instance is running by default with no `mezmoDeploymentGroup` specified. This will configure all Edge pipelines defined in the account.
 
 To run selected pipelines, apply a Deployment Group in the Pipeline Settings page on the web app, and run the following to update this configuration:
-helm upgrade --reuse-values --set mezmoDeploymentGroup=<DEPLOYMENT_GROUP> {{ .Release.Name }} {{ .Chart.Name }}
+
+  $ helm upgrade --reuse-values --set mezmoDeploymentGroup=<DEPLOYMENT_GROUP> {{ .Release.Name }} mezmo/{{ .Chart.Name }}
 
 {{else -}}
 
