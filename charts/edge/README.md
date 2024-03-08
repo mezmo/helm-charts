@@ -31,7 +31,8 @@ helm install edge mezmo/edge \
 
 | **Key**                      | **Type** | **Default**      | **Description**
 | ---------------------------- | -------- | ---------------- | ----------------------------------------------------------------------
-| mezmoApiAccessToken          | string   |                  | Your Mezmo API access token
+| mezmoApiAccessToken       | string   |                 | Your Mezmo API access token. This has a lower precedence than `mezmoApiAccessSecret`
+| mezmoApiAccessSecret      | string   |                 | Existing secret containing your Mezmo API access token. Given secret should have the token in a key named `api-access-token` and be in the same namespace as the Edge instance. This takes precedence over `mezmoApiAccessToken`
 | mezmoDeploymentGroup         | string   |                  | Deployment group to apply to this Edge instance. Leaving undefined pulls all Edge pipelines for the org
 | mezmoApiScheme               | string   | "https"          | The scheme to use for the Mezmo API URL
 | mezmoApiHost                 | string   | "api.mezmo.com"  | The hostname(:port) of the Mezmo API

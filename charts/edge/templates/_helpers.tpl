@@ -102,3 +102,18 @@ deployment_group: {{ .Values.mezmoDeploymentGroup | quote }}
 ports: {{- include "edge.sourcePorts" . | nindent 2 }}
 version: edge-{{ $.Chart.Version }}
 {{- end }}
+
+{{/*
+Secret file name to use
+*/}}
+{{- define "edge.tokenSecretRef" -}}
+{{- if .Values.mezmoApiAccessSecret }}
+name: {{ .Values.mezmoApiAccessSecret }}
+{{- else }}
+{{- if .Values.mezmoApiAccessToken }}
+name: {{ include "edge.fullname" . }}
+{{- else }}
+{{ fail .Values.tokenSecretRefError }}
+{{- end }}
+{{- end }}
+{{- end }}
