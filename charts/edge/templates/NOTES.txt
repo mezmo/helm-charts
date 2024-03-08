@@ -1,13 +1,3 @@
-{{- if not .Values.mezmoApiAccessToken -}}
-#####################################################################
-###  ERROR: Please specify an access token `mezmoApiAccessToken`  ###
-#####################################################################
-
-Try:
-
-  $ helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} mezmo/{{ .Chart.Name }}
-
-{{ else -}}
 Welcome to Edge {{ .Chart.Version }} release "{{ .Release.Name }}".
 
 ----------------------------------------------------------------
@@ -37,7 +27,6 @@ To run selected pipelines, apply a Deployment Group in the Pipeline Settings pag
 
 This Edge instance is running the "{{ .Values.mezmoDeploymentGroup}}" deployment group pipelines.
 
-{{end -}}
 {{end -}}
 
 -

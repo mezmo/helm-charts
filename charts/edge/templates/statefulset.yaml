@@ -64,7 +64,7 @@ spec:
           - name: MEZMO_LOCAL_DEPLOY_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ include "edge.fullname" . }}
+                {{ include "edge.tokenSecretRef" . | nindent 16  }}
                 key: api-access-token
           - name: MEZMO_METRICS_ENDPOINT_URL
             value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/metric/usage?edge_id={{include "edge.Id" . | urlquery }}"

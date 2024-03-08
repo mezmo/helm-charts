@@ -15,6 +15,9 @@ mezmoApiHost: "api.mezmo.com"
 # Your Mezmo API Access Token
 mezmoApiAccessToken: ""
 
+# Secret containing your Mezmo API Access Token
+mezmoApiAccessSecret: ""
+
 # Deployment group for this Edge instance.
 # Setting configures only pipelines tagged with this group name.
 # Leaving unset configures all Edge pipelines defined in your org.
@@ -83,3 +86,14 @@ maxMemBufferEvents: 0
 # as floats and rendering scientific notation
 reduceByteThresholdPerState: "104857600"
 reduceByteThresholdAllStates: "1073741824"
+tokenSecretRefError: |+
+
+
+  ######################################################################
+  ###  ERROR: Please specify an access token (`mezmoApiAccessToken`) ###
+  ###    or a secret containing a token (`mezmoApiAccessSecret`)     ###
+  ######################################################################
+
+  Try:
+
+    $ helm upgrade --reuse-values --set mezmoApiAccessToken=<ACCESS_TOKEN> {{ .Release.Name }} mezmo/{{ .Chart.Name }}
