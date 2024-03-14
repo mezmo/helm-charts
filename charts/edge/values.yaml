@@ -78,3 +78,6 @@ pvcName: ""
 
 maxDiskBufferBytes: 0
 maxMemBufferEvents: 0
+
+reduceByteThresholdPerState: 104857600
+reduceByteThresholdAllStates: 1073741824

@@ -58,9 +58,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: MEZMO_API_HOST
-            value: {{ .Values.mezmoApiHost }}
+            value: "{{ .Values.mezmoApiHost }}"
           - name: MEZMO_API_SCHEME
-            value: {{ .Values.mezmoApiScheme }}
+            value: "{{ .Values.mezmoApiScheme }}"
           - name: MEZMO_LOCAL_DEPLOY_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
@@ -75,7 +75,7 @@ spec:
           - name: MEZMO_EDGE_ID
             value: "{{include "edge.Id" . }}"
           - name: VECTOR_LOG
-            value: {{ .Values.logLevel }}
+            value: "{{ .Values.logLevel }}"
           - name: POD_NAME
             valueFrom:
               fieldRef:
@@ -94,12 +94,16 @@ spec:
             value: "1"
           {{- if .Values.maxDiskBufferBytes }}
           - name: MEZMO_DISK_BUFFER_MAX_BYTES
-            value: {{ .Values.maxDiskBufferBytes }}
+            value: "{{ .Values.maxDiskBufferBytes }}"
           {{- end }}
           {{- if .Values.maxMemBufferEvents }}
           - name: MEZMO_MEM_BUFFER_MAX_EVENTS
-            value: {{ .Values.maxMemBufferEvents }}
+            value: "{{ .Values.maxMemBufferEvents }}"
           {{- end }}
+          - name: REDUCE_BYTE_THRESHOLD_PER_STATE
+            value: "{{ .Values.reduceByteThresholdPerState }}"
+          - name: REDUCE_BYTE_THRESHOLD_ALL_STATES
+            value: "{{ .Values.reduceByteThresholdAllStates }}"
           args:
             - --config-dir
             - /etc/vector/
