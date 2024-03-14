@@ -44,7 +44,7 @@ helm install edge mezmo/edge \
 | pvcName                      | string   | ""               | Optional name for an existing PersistentVolumeClaim to use for disk buffering, aggregate persistence and k8s log checkpoints. Leaving undefined will default to ephemeral storage lasting the lifetime of the pod
 | maxDiskBufferBytes           | int      |268435488 (256MiB)| Optional max number of bytes to store in a disk-backed buffer.
 | maxMemBufferEvents           | int      | 1000             | Optional max number of events to store in a memory buffer.
-| reduceByteThresholdPerState  | int      | 104857600 (100Mb)| Optional max number of bytes to store in a memory for any given reduce component.
-| reduceByteThresholdAllStates | int      | 1073741824 (1Gb) | Optional max number of bytes to store in a memory for all given reduce components.
+| reduceByteThresholdPerState  | int      | 104857600 (100MiB)| Optional max number of bytes to store in a memory for any given reduce component.
+| reduceByteThresholdAllStates | int      | 1073741824 (1GiB) | Optional max number of bytes to store in a memory for all given reduce components.
 
 \* Port 8686 is reserved for internal use, and should not be additionally configured for sourcePorts
