@@ -58,9 +58,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: MEZMO_API_HOST
-            value: "{{ .Values.mezmoApiHost }}"
+            value: {{ .Values.mezmoApiHost | quote }}
           - name: MEZMO_API_SCHEME
-            value: "{{ .Values.mezmoApiScheme }}"
+            value: {{ .Values.mezmoApiScheme | quote }}
           - name: MEZMO_LOCAL_DEPLOY_AUTH_TOKEN
             valueFrom:
               secretKeyRef:
@@ -73,9 +73,9 @@ spec:
           - name: MEZMO_TASKS_POST_ENDPOINT_URL
             value: "{{include "edge.mezmoApiBaseUrl" . }}/v3/pipeline/account/local-deploy/tasks/:task_id/results"
           - name: MEZMO_EDGE_ID
-            value: "{{include "edge.Id" . }}"
+            value: {{include "edge.Id" . | quote }}
           - name: VECTOR_LOG
-            value: "{{ .Values.logLevel }}"
+            value: {{ .Values.logLevel | quote }}
           - name: POD_NAME
             valueFrom:
               fieldRef:
@@ -94,16 +94,16 @@ spec:
             value: "1"
           {{- if .Values.maxDiskBufferBytes }}
           - name: MEZMO_DISK_BUFFER_MAX_BYTES
-            value: "{{ .Values.maxDiskBufferBytes }}"
+            value: {{ .Values.maxDiskBufferBytes | quote }}
           {{- end }}
           {{- if .Values.maxMemBufferEvents }}
           - name: MEZMO_MEM_BUFFER_MAX_EVENTS
-            value: "{{ .Values.maxMemBufferEvents }}"
+            value: {{ .Values.maxMemBufferEvents | quote }}
           {{- end }}
           - name: REDUCE_BYTE_THRESHOLD_PER_STATE
-            value: "{{ .Values.reduceByteThresholdPerState }}"
+            value: {{ .Values.reduceByteThresholdPerState | quote }}
           - name: REDUCE_BYTE_THRESHOLD_ALL_STATES
-            value: "{{ .Values.reduceByteThresholdAllStates }}"
+            value: {{ .Values.reduceByteThresholdAllStates | quote }}
           args:
             - --config-dir
             - /etc/vector/

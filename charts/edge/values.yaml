@@ -79,5 +79,7 @@ pvcName: ""
 maxDiskBufferBytes: 0
 maxMemBufferEvents: 0
 
-reduceByteThresholdPerState: 104857600
-reduceByteThresholdAllStates: 1073741824
+# defaults defined as strings to avoid helm treating
+# as floats and rendering scientific notation
+reduceByteThresholdPerState: "104857600"
+reduceByteThresholdAllStates: "1073741824"
