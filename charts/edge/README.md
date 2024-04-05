@@ -13,11 +13,14 @@
 
 ```sh
 helm install edge mezmo/edge \
-  --namespace <MY_NAMESPACE> \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN>
 ```
 
-By default ports in the range [8000, 8010] are configured. See `service.sourcePorts.*` values for configuring different ranges. For example, to configure with no contiguous range and two ports (syslog and http) exposed:
+By default ports in the range [8000, 8010] are configured. See `service.sourcePorts.*` values for configuring different ranges.
+
+## Specifying a different port range
+You may specify a different port range if desired.
+For example, to configure with no contiguous range and two ports (syslog and http) exposed:
 
 ```sh
 helm install edge mezmo/edge \
@@ -25,6 +28,16 @@ helm install edge mezmo/edge \
   --set service.sourcePorts.end=0 \
   --set service.sourcePorts.list="{514,80}"
 ```
+
+Or choose a custom range:
+
+```shell
+helm install edge mezmo/edge \
+  --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
+  --set service.sourcePorts.start=20000 \
+  --set service.sourcePorts.end=20020
+```
+
 ## Configuration
 
 ### Values
@@ -36,6 +49,7 @@ helm install edge mezmo/edge \
 | mezmoDeploymentGroup         | string   |                  | Deployment group to apply to this Edge instance. Leaving undefined pulls all Edge pipelines for the org
 | mezmoApiScheme               | string   | "https"          | The scheme to use for the Mezmo API URL
 | mezmoApiHost                 | string   | "api.mezmo.com"  | The hostname(:port) of the Mezmo API
+| namespace                    | string   |                  | Optional namespace for compartmentalization
 | logLevel                     | string   | info             | Controls the logging verbosity of the deployment
 | autoscaling.enabled          | boolean  | false            | Whether or not to enable a HorizontalPodAutoscaler for this deployment
 | service.sourcePorts.start    | int      | 8000             | The start of the port range (inclusive [start, end])
