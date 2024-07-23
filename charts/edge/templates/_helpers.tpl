@@ -100,7 +100,8 @@ name: {{ $.Release.Name }}
 deployment_group: {{ .Values.mezmoDeploymentGroup | quote }}
 {{- end }}
 ports: {{- include "edge.sourcePorts" . | nindent 2 }}
-version: edge-{{ $.Chart.Version }}
+chart_version: edge-{{ $.Chart.Version }}
+vector_version: {{ .Chart.AppVersion }}
 {{- end }}
 
 {{/*
