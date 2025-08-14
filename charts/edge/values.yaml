@@ -23,6 +23,17 @@ mezmoApiAccessSecret: ""
 # Leaving unset configures all Edge pipelines defined in your org.
 mezmoDeploymentGroup: ""
 
+
+# Remote tasks are for running edge instances that phone home for
+# tasks to be run locally.  this includes things like tap requests
+# in the UI.  We rate limit these requests to 10/second by default.
+# This is the intitial delay before the first poll for remote tasks
+remoteTaskInitialPollDelay: "5"
+# This is the delay between subsequent polls for remote tasks
+remoteTaskPollStepDelay: "2"
+# This is the wait timeout for remote task execution response
+remoteTaskExecutionTimeout: "60"
+
 logLevel: "info"
 
 image:
@@ -43,7 +54,11 @@ service:
     end: 8010
     list: []
 
+# Use a DaemonSet to run one instance of the Edge agent on each node.
+useDaemonSet: false
+# When false, a StatefulSet is used to run a minimum of one instance.
 replicaCount: 1
+# StatefulSet only: autoscaling configuration
 autoscaling:
   enabled: false
   minReplicas: 1

@@ -1,16 +1,12 @@
-{{- if not .Values.useDaemonSet -}}
+{{- if .Values.useDaemonSet -}}
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: {{ include "edge.fullname" . }}
   labels:
     {{- include "edge.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  minReadySeconds: 10
-  {{- end }}
   selector:
     matchLabels:
       {{- include "edge.selectorLabels" . | nindent 6 }}
@@ -91,7 +87,7 @@ spec:
           - name: POD_INDEX_LABEL
             valueFrom:
               fieldRef:
-                fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+                fieldPath: metadata.name
           {{- if .Values.enableK8sLogs }}
           - name: EDGE_SELF_NODE_NAME
             valueFrom:
@@ -143,4 +139,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- end }}
+{{- end}}

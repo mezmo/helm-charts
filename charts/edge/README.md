@@ -49,6 +49,10 @@ helm install edge mezmo/edge \
 | mezmoDeploymentGroup         | string   |                  | Deployment group to apply to this Edge instance. Leaving undefined pulls all Edge pipelines for the org
 | mezmoApiScheme               | string   | "https"          | The scheme to use for the Mezmo API URL
 | mezmoApiHost                 | string   | "api.mezmo.com"  | The hostname(:port) of the Mezmo API
+| useDaemonSet                 | boolean  | false            | Whether to use DaemonSet deployment model, or StatefulSet deployment model (STS is default)
+| remoteTaskInitialPollDelay   | int.     | 5                | How long to wait post start-up to poll for remote tasks (seconds)
+| remoteTaskPollStepDelay.     | int.     | 2                | How long to wait between task polling cycles (seconds)
+| remoteTaskExecutionTimeout.  | int.     | 60               | How long to wait for remote task calls to complete (seconds)
 | namespace                    | string   |                  | Optional namespace for compartmentalization
 | logLevel                     | string   | info             | Controls the logging verbosity of the deployment
 | autoscaling.enabled          | boolean  | false            | Whether or not to enable a HorizontalPodAutoscaler for this deployment
