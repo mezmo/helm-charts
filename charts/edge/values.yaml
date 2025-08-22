@@ -91,8 +91,11 @@ imagePullSecrets: []
 
 enableK8sLogs: false
 
-# Optional PersistentVolumeClaim name to use for default storage
+# Optional PersistentVolumeClaim name to use for default storage in statefulset deployments
 pvcName: ""
+
+# Optional path for the default host storage for daemonset deployments
+daemonsetVolumeHostPath: "/data/edge"
 
 maxDiskBufferBytes: 0
 maxMemBufferEvents: 0
