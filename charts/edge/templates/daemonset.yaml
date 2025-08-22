@@ -28,12 +28,9 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
         - name: data
-          {{- if .Values.pvcName }}
-          persistentVolumeClaim:
-            claimName: {{ .Values.pvcName | quote }}
-          {{- else }}
-          emptyDir: {}
-          {{- end }}
+          hostPath:
+            path: {{ .Values.daemonsetVolumeHostPath | quote }}
+            type: DirectoryOrCreate
         - name: config
           projected:
             sources:

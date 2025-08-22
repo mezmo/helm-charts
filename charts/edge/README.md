@@ -60,7 +60,8 @@ helm install edge mezmo/edge \
 | service.sourcePorts.end      | int      | 8010             | The end of the port range (set 0 or "" to disable port range)
 | service.sourcePorts.list     | array[]  | []               | Optional list of discrete ports to configure on the service
 | enableK8sLogs                | boolean  | false            | Whether or not to add ClusterRole and Volume access required for k8s logs source
-| pvcName                      | string   | ""               | Optional name for an existing PersistentVolumeClaim to use for disk buffering, aggregate persistence and k8s log checkpoints. Leaving undefined will default to ephemeral storage lasting the lifetime of the pod
+| pvcName                      | string   | ""               | (Statefulset Deployments Only) Optional name for an existing PersistentVolumeClaim to use for disk buffering, aggregate persistence and k8s log checkpoints. Leaving undefined will default to ephemeral storage lasting the lifetime of the pod
+| daemonsetVolumeHostPath      | string   | /data/edge       | (Daemonset Deployments Only) Kubernetes worker node host path to use for disk buffering, aggregate persistence and k8s logs checkpoints.
 | maxDiskBufferBytes           | int      |268435488 (256MiB)| Optional max number of bytes to store in a disk-backed buffer.
 | maxMemBufferEvents           | int      | 1000             | Optional max number of events to store in a memory buffer.
 | reduceByteThresholdPerState  | int      | 104857600 (100MiB)| Optional max number of bytes to store in a memory for any given reduce component.
