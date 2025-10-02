@@ -4,8 +4,8 @@ home: https://www.mezmo.com
 icon: https://app.mezmo.com/assets/img/mz-logo-square-128.png
 description: A Helm chart for deploying Mezmo Edge
 type: application
-appVersion: "6.2.0"
-version: 1.3.3
+appVersion: "6.3.2"
+version: 1.4.0
 maintainers:
   - name: Mezmo
     email: help@mezmo.com

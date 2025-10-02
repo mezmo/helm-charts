@@ -37,7 +37,7 @@ remoteTaskExecutionTimeout: "60"
 logLevel: "info"
 
 image:
-  repository: mezmohq/vector
+  repository: mezmo/vector
   pullPolicy: IfNotPresent
 
 service:
