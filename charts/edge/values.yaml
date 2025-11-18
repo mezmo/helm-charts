@@ -90,6 +90,7 @@ securityContext: {}
 imagePullSecrets: []
 
 enableK8sLogs: false
+k8sAdditionalHostPaths: {}
 
 # Optional PersistentVolumeClaim name to use for default storage in statefulset deployments
 pvcName: ""
