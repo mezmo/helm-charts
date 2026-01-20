@@ -16,6 +16,16 @@ helm install edge mezmo/edge \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN>
 ```
 
+## Kubernetes Logs Source
+If you plan to use the Kubernetes Logs Source in your Edge deployment to read pod logs, please be sure to enable it in your Helm values so it has the right permissions set:
+Note: It's also recommended to use a DaemonSet deployment to gain access to all worker nodes and their pod logs.
+```sh
+helm install edge mezmo/edge \
+  --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
+  --set enableK8sLogs=true \
+  --set useDaemonSet=true
+```
+
 By default ports in the range [8000, 8010] are configured. See `service.sourcePorts.*` values for configuring different ranges.
 
 ## Specifying a different port range
