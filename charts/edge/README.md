@@ -16,9 +16,15 @@ helm install edge mezmo/edge \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN>
 ```
 
+In the case above, using `edge` as the name will be reported in our UI for all edge pipelines it gets assigned.  If you have multiple instances to deploy, consider using deployment groups and unique names per `helm install`.
+
+![image](../../files/images/edge.1.png)
+
 ## Kubernetes Logs Source
 If you plan to use the Kubernetes Logs Source in your Edge deployment to read pod logs, please be sure to enable it in your Helm values so it has the right permissions set:
-Note: It's also recommended to use a DaemonSet deployment to gain access to all worker nodes and their pod logs.
+
+> Note: It's also recommended to use a DaemonSet deployment to gain access to all worker nodes and their pod logs.
+
 ```sh
 helm install edge mezmo/edge \
   --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
@@ -26,11 +32,25 @@ helm install edge mezmo/edge \
   --set useDaemonSet=true
 ```
 
-By default ports in the range [8000, 8010] are configured. See `service.sourcePorts.*` values for configuring different ranges.
+## Service Ports
 
-## Specifying a different port range
-You may specify a different port range if desired.
-For example, to configure with no contiguous range and two ports (syslog and http) exposed:
+Service ports are for a Kubernetes service mapping that allows you to use different sources in your edge pipeline that setup TCP/UDP sockets for receiving data.  Ex: Syslog, HTTP, DataDog Agent, etc
+
+By default ports in the range [8000, 8010] are configured for the Kubernetes Service. See `service.sourcePorts.*` values for configuring different ranges.
+
+### Custom service port setup
+
+If you plan on ONLY needing the Kubernetes Log Source to read pod log files, you can turn off the service ports completely
+
+```sh
+helm install edge mezmo/edge \
+  --set mezmoApiAccessToken=<MEZMO_API_ACCESS_TOKEN> \
+  --set service.sourcePorts.end=0 \
+  --set enableK8sLogs=true \
+  --set useDaemonSet=true
+```
+
+Expounding on that capability, you can turn off the port range configure two individual ports (syslog and http) to be exposed:
 
 ```sh
 helm install edge mezmo/edge \
@@ -39,7 +59,7 @@ helm install edge mezmo/edge \
   --set service.sourcePorts.list="{514,80}"
 ```
 
-Or choose a custom range:
+Finally, you can also override the default range for a custom one:
 
 ```shell
 helm install edge mezmo/edge \
