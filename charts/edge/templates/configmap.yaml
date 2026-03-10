@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "edge.fullname" . }}
+  name: "{{ include "edge.fullname" . }}"
   labels:
     {{- include "edge.labels" . | nindent 4 }}
 data:
@@ -21,3 +21,49 @@ data:
         {{- $_ := set $payload "replica" "0"}}
         {{- end }}
         payload: {{ toJson $payload | quote }}
+  kubestats.yaml: |
+    api:
+      enabled: true
+      address: 0.0.0.0:8686
+    secret:
+      k8s_sa:
+        type: directory
+        path: /var/run/secrets/kubernetes.io/serviceaccount
+        remove_trailing_whitespace: true
+
+    sources:
+      k8s_events:
+        type: http_client
+        endpoint: https://kubernetes.default.svc/api/v1/events
+        headers:
+          Content-Type:
+            - "application/json"
+          Accept:
+            - "application/json"
+        auth:
+          strategy: bearer
+          token: "SECRET[k8s_sa.token]"
+        tls:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+      k8s_pod_metrics:
+        type: http_client
+        endpoint: https://kubernetes.default.svc/apis/metrics.k8s.io/v1beta1/pods
+        headers:
+          Content-Type:
+            - "application/json"
+          Accept:
+            - "application/json"
+        auth:
+          strategy: bearer
+          token: "SECRET[k8s_sa.token]"
+        tls:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+    sinks:
+      blackhole:
+        type: blackhole
+        inputs:
+          - k8s_events
+          - k8s_pod_metrics
+        print_interval_secs: 10

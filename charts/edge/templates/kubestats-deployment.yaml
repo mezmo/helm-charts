@@ -1,15 +1,16 @@
-{{- if .Values.useDaemonSet -}}
+{{- if .Values.enableKubeStats -}}
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
-  name: {{ include "edge.fullname" . }}
+  name: "{{ include "edge.fullname" . }}-kubestats"
   labels:
     {{- include "edge.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
       {{- include "edge.selectorLabels" . | nindent 6 }}
+  replicas: 1
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -27,31 +28,12 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: data
-          hostPath:
-            path: {{ .Values.daemonsetVolumeHostPath | quote }}
-            type: DirectoryOrCreate
         - name: config
           configMap:
             name: {{ include "edge.fullname" . }}
             items:
-              - key: processor.yaml
-                path: processor.yaml
-        {{- if .Values.enableK8sLogs }}
-        - hostPath:
-            path: /var/log/
-          name: var-log
-        - hostPath:
-            path: /var/lib/
-          name: var-lib
-        {{- with .Values.k8sAdditionalHostPaths }}
-        {{- range . }}
-        - name: {{ .name }}
-          hostPath:
-            path: {{ .path }}
-        {{- end }}
-        {{- end }}
-        {{- end }}
+              - key: kubestats.yaml
+                path: kubestats.yaml
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
@@ -92,7 +74,7 @@ spec:
           - name: POD_INDEX_LABEL
             valueFrom:
               fieldRef:
-                fieldPath: metadata.name
+                fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
           {{- if .Values.enableK8sLogs }}
           - name: EDGE_SELF_NODE_NAME
             valueFrom:
@@ -114,31 +96,14 @@ spec:
           - name: REDUCE_BYTE_THRESHOLD_ALL_STATES
             value: {{ .Values.reduceByteThresholdAllStates | quote }}
           args:
-            - --config-dir
-            - /etc/vector/
+            - --config
+            - /etc/vector/kubestats.yaml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: data
-              mountPath: "/data/vector"
             - name: config
               mountPath: "/etc/vector/"
               readOnly: true
-            {{- if .Values.enableK8sLogs }}
-            - mountPath: /var/log/
-              name: var-log
-              readOnly: true
-            - mountPath: /var/lib/
-              name: var-lib
-              readOnly: true
-            {{- with .Values.k8sAdditionalHostPaths }}
-            {{- range . }}
-            - name: {{ .name }}
-              mountPath: {{ .path }}
-              readOnly: true
-            {{- end }}
-            {{- end }}
-            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -151,4 +116,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- end}}
+{{- end }}
