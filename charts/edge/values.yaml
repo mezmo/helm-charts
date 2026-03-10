@@ -23,7 +23,6 @@ mezmoApiAccessSecret: ""
 # Leaving unset configures all Edge pipelines defined in your org.
 mezmoDeploymentGroup: ""
 
-
 # Remote tasks are for running edge instances that phone home for
 # tasks to be run locally.  this includes things like tap requests
 # in the UI.  We rate limit these requests to 10/second by default.
@@ -33,6 +32,8 @@ remoteTaskInitialPollDelay: "5"
 remoteTaskPollStepDelay: "2"
 # This is the wait timeout for remote task execution response
 remoteTaskExecutionTimeout: "60"
+
+remoteTaskExtraHeaders: {}
 
 logLevel: "info"
 

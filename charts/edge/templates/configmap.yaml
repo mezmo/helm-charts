@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "edge.fullname" . }}
+  name: "{{ include "edge.fullname" . }}"
   labels:
     {{- include "edge.labels" . | nindent 4 }}
 data:
@@ -13,6 +13,7 @@ data:
       request:
         headers:
           authorization: "Token ${MEZMO_LOCAL_DEPLOY_AUTH_TOKEN}"
+          {{- toYaml .Values.remoteTaskExtraHeaders | nindent 10 }}
         {{- $payload := include "edge.heartbeatCommon" . | fromYaml }}
         {{- $has_label := and (ge (.Capabilities.KubeVersion.Major | int) 1) (ge (.Capabilities.KubeVersion.Minor | int) 28) }}
         {{- if $has_label }}
