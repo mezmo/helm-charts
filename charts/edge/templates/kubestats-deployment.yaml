@@ -32,7 +32,7 @@ spec:
           configMap:
             name: {{ include "edge.fullname" . }}
             items:
-              - key: kubestats.yaml
+              - key: kubestats.2.yaml
                 path: kubestats.yaml
       terminationGracePeriodSeconds: 60
       containers:
@@ -71,6 +71,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          - name: NODE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
           - name: POD_INDEX_LABEL
             valueFrom:
               fieldRef:

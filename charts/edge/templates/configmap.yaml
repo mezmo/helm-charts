@@ -67,3 +67,97 @@ data:
           - k8s_events
           - k8s_pod_metrics
         print_interval_secs: 10
+  kubestats.2.yaml: |
+    api:
+      enabled: true
+      address: 0.0.0.0:8686
+    secret:
+      k8s_sa:
+        type: directory
+        path: /var/run/secrets/kubernetes.io/serviceaccount
+        remove_trailing_whitespace: true
+    sources:
+      k8s_pod_metrics:
+        type: http_client
+        endpoint: https://kubernetes.default.svc/apis/metrics.k8s.io/v1beta1/pods
+        headers:
+          Content-Type:
+            - "application/json"
+          Accept:
+            - "application/json"
+        auth:
+          strategy: bearer
+          token: "SECRET[k8s_sa.token]"
+        tls:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+      kubelet_stats:
+        type: http_client
+        endpoint: "https://${NODE_IP}:10250/stats/summary"
+        scrape_interval_secs: 15
+        method: GET
+        headers:
+          Content-Type:
+            - "application/json"
+          Accept:
+            - "application/json"
+        auth:
+          strategy: bearer
+          token: "SECRET[k8s_sa.token]"
+        tls:
+          verify_certificate: false
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+    transforms:
+      kubelet_stats_to_pod_metrics:
+        type: remap
+        inputs:
+          - kubelet_stats
+        source: |
+          parsed = parse_json!(string!(.message))
+
+          . = map_values(array!(parsed.pods)) -> |pod| {
+            ts = to_string(pod.containers[0].cpu.time) ?? format_timestamp!(now(), format: "%Y-%m-%dT%H:%M:%SZ")
+            containers = map_values(array!(pod.containers)) -> |c| {
+              cpu_nanocores = to_int(c.cpu.usageNanoCores) ?? 0
+              cpu_str = to_string(cpu_nanocores / 1000000) + "m"
+
+              mem_bytes = to_int(c.memory.workingSetBytes) ?? 0
+              mem_str = if mem_bytes >= 1073741824 {
+                to_string(mem_bytes / 1073741824) + "Gi"
+              } else if mem_bytes >= 1048576 {
+                to_string(mem_bytes / 1048576) + "Mi"
+              } else if mem_bytes >= 1024 {
+                to_string(mem_bytes / 1024) + "Ki"
+              } else {
+                to_string(mem_bytes)
+              }
+
+              {
+                "name": c.name,
+                "usage": { "cpu": cpu_str, "memory": mem_str }
+              }
+            }
+
+            {
+              "message": {
+                "kind": "PodMetrics",
+                "apiVersion": "metrics.k8s.io/v1beta1",
+                "metadata": {
+                  "name": pod.podRef.name,
+                  "namespace": pod.podRef.namespace,
+                  "creationTimestamp": pod.startTime
+                },
+                "timestamp": ts,
+                "window": "15s",
+                "containers": containers
+              }
+            }
+          }
+          log(.)
+    sinks:
+      blackhole:
+        type: blackhole
+        inputs:
+          - kubelet_stats_to_pod_metrics
+        print_interval_secs: 10
